@@ -1,0 +1,21 @@
+plugins {
+    id "application"
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(16)
+    }
+}
+
+application {
+    getMainClass().set("aa.programming.jardemo.Main")
+}
+
+jar {
+    manifest {
+        attributes(
+                "Main-Class": application.getMainClass().get()
+        )
+    }
+}

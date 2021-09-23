@@ -1,0 +1,6 @@
+# Gradle related folders
+.gradle/
+build/
+
+# IntelliJ related folder
+.idea/

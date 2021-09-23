@@ -1,0 +1,13 @@
+#!/bin/bash
+
+MESSAGE="Create project"
+TAG="v1.0.0"
+
+git init --initial-branch=main
+git add .
+git commit -m "${MESSAGE}"
+git remote add origin git@github.com:albertattard/programming--hello-world-jar-demo.git
+git push -u origin main
+
+git tag --annotate ${TAG} --message "${MESSAGE}"
+git push origin ${TAG}

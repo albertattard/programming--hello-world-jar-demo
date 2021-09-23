@@ -1,0 +1,50 @@
+name: Build Application
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+concurrency:
+  group: programming--hello-world-jar-demo
+  cancel-in-progress: false
+
+jobs:
+  build:
+    name: Build application
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Set up JDK
+        uses: actions/setup-java@v2
+        with:
+          java-version: '16'
+          distribution: 'adopt'
+      - name: Make gradlew executable
+        run: chmod +x gradlew
+      - name: Build with Gradle
+        run: ./gradlew build
+      - name: Release Demo
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          body_path: dist/changes.md
+          draft: false
+          prerelease: false
+      - name: Upload Release Demo
+        id: upload-release-asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./build/libs/hello-world-jar-demo.jar
+          asset_name: hello-world-jar-demo.jar
+          asset_content_type: application/zip
