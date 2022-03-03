@@ -4,3 +4,6 @@ build/
 
 # IntelliJ related folder
 .idea/
+
+# OS files
+**/.DS_Store
